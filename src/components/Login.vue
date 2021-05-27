@@ -58,6 +58,8 @@
 
 <script>
 import Home from "./Home";
+import Task from "./Task";
+import App from "./App";
 import axios from 'axios'
 
 export default {
@@ -118,21 +120,19 @@ export default {
           this.processing = false
 
           const token = response.data.auth_token
-          this.errors.push(token)
           this.$store.commit('setToken', token)
           axios.defaults.headers.common["Authorization"] = "Token " + token
           // localStorage.setItem("token", token)
-          console.log(response)
 
           // const toPath = this.$route.query.to || '/'
 
-          this.$navigateTo(Home, {clearHistory: true})
+          this.$navigateTo(App, {clearHistory: true})
         })
         .catch(error => {
           this.processing = false
           if (error.response) {
             for (const property in error.response.data) {
-              this.errors.push(`${property}: ${error.response.data[property]}`)
+              this.errors.push(`${error.response.data[property]}`)
             }
           } else {
             this.errors.push('Something went wrong. Please try again')
@@ -233,7 +233,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .page {
   align-items: center;
   flex-direction: column;
@@ -260,6 +260,16 @@ export default {
   text-align: center;
   color: #D51A1A;
 }
+
+.header2 {
+  horizontal-align: center;
+  font-size: 25;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 15;
+  margin-bottom: 10;
+}
+
 
 .input-field {
   margin-bottom: 25;
