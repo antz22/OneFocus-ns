@@ -7,3 +7,93 @@
 
 // Global SCSS styling
 // @see https://docs.nativescript.org/ui/styling
+
+.far {
+    font-family: Font Awesome 5 Free, fa-regular-400;
+    font-weight: 400;
+}
+
+.fab {
+    font-family: Font Awesome 5 Free, fa-brands-400;
+    font-weight: 400;
+}
+
+.fas {
+    font-family: Font Awesome 5 Free, fa-solid-900;
+    font-weight: 400;
+}
+
+
+
+Page {
+  font-family: "Montserrat", "Montserrat Regular 400"
+}
+
+
+// Tasks
+
+
+// priority
+
+.urgent {
+  margin-top: 20;
+  margin-bottom: 10;
+  font-size: 22px;
+  color: #FF0000;
+}
+
+.normal {
+  margin-bottom: 10;
+  font-size: 22px;
+  color: #D1B000;
+}
+
+.low {
+  margin-bottom: 10;
+  font-size: 22px;
+  color: #5CD100;
+}
+
+.b-high {
+  border-color: #FF0000;
+}
+.b-medium {
+  border-color: #D1B000;
+}
+.b-low {
+  border-color: #5CD100;
+}
+
+// task card
+
+
+.task {
+  margin-bottom: 20;
+  border-radius: 5;
+  border-width: 0.5;
+  border-color: lightgray;
+}
+
+.content {
+  font-family: Montserrat, Montserrat SemiBold 600;
+  font-size: 16px;
+  margin-left: 10;
+  margin-top: 10;
+}
+
+.time {
+  font-weight: normal;
+  font-size: 16px;
+  margin-right: 10;
+  margin-top: 10;
+}
+
+.check {
+  font-weight: normal;
+  font-size: 16px;
+  margin-top: 5;
+  margin-right: 10;
+  margin-bottom: 10;
+}
+
+

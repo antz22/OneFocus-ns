@@ -1,10 +1,13 @@
 import Vue from 'nativescript-vue'
-import App from './components/App'
-import Home from './components/Home'
-import Login from './components/Login'
-import Pomodoro from './components/Pomodoro'
 import VueDevtools from 'nativescript-vue-devtools'
 import axios from 'axios'
+import NSVueShadow from 'nativescript-vue-shadow'
+
+import Login from './views/Login'
+import Home from './views/Home'
+import Tasks from './views/Tasks'
+import LandingPage from './views/LandingPage'
+import Pomodoro from './views/Pomodoro'
 
 if(TNS_ENV !== 'production') {
   Vue.use(VueDevtools)
@@ -24,6 +27,9 @@ Vue.registerElement(
     }
   }
 )
+Vue.registerElement("DropDown", () => require("nativescript-drop-down/drop-down").DropDown)
+
+Vue.use(NSVueShadow)
 
 
 const PROD_BACK_URL = 'https://onefocus.herokuapp.com'
@@ -38,5 +44,5 @@ axios.defaults.baseURL = DEV_URL
 
 new Vue({
   store,
-  render: h => h('frame', [h(Login)])
+  render: h => h('frame', [h(Tasks)])
 }).$start()

@@ -1,7 +1,7 @@
 <template>
-  <Page>
+  <Page actionBarHidden="true">
 
-    <ActionBar title="OneFocus" android:flat="true"/>
+    <!-- <ActionBar title="OneFocus" android:flat="true"/> -->
 
     <TabView android:tabBackgroundColor="#53ba82"
               android:tabTextColor="#c4ffdf"
@@ -10,25 +10,29 @@
               androidTabsPosition="bottom"
               selectedIndex="0">
 
+      <!-- <TabViewItem class="fas" title.decode="Home &#xf015;"> -->
       <TabViewItem title="Home">
         <GridLayout columns="*" rows="*">
           <Home/>
         </GridLayout>
       </TabViewItem>
 
+      <!-- <TabViewItem class="fas" title.decode="Tasks &#xf0ae;"> -->
       <TabViewItem title="Tasks">
         <GridLayout columns="*" rows="*">
-          <Task/>
+          <Tasks/>
         </GridLayout>
       </TabViewItem>
 
+      <!-- <TabViewItem class="fas" title.decode="Goals &#xf024;"> -->
       <TabViewItem title="Goals">
         <GridLayout columns="*" rows="*">
-          <Goal/>
+          <Goals/>
         </GridLayout>
       </TabViewItem>
 
-      <TabViewItem title="Pomodoro">
+      <!-- <TabViewItem class="fas" title.decode="Pomodoro &#xf017;"> -->
+      <TabViewItem title="Pomo">
         <GridLayout columns="*" rows="*">
           <Pomodoro/>
         </GridLayout>
@@ -43,36 +47,20 @@
     </TabView>
 
   </Page>
-
-
-  <!-- <Page>
-
-      <TabViewItem title="Home">
-        <GridLayout columns="*" rows="*">
-        <Frame id="home">
-        <Home/>
-          <Label text="hi"></Label>
-        </Frame>
-        </GridLayout>
-      </TabViewItem>
-
-  </Page> -->
 </template>
 
 <script>
 import Home from "./Home.vue";
-import Task from "./Task.vue";
-import Goal from "./Goal.vue";
+import Tasks from "./Tasks.vue";
+import Goals from "./Goals.vue";
 import Pomodoro from "./Pomodoro.vue";
-import About from "./About.vue";
 
 export default {
   components: {
     Home,
-    Task,
-    Goal,
+    Tasks,
+    Goals,
     Pomodoro,
-    About
   }
 };
 
@@ -82,6 +70,10 @@ export default {
 ActionBar {
   background-color: #53ba82;
   color: #ffffff;
+}
+
+Page {
+  font-family: "Montserrat", "Montserrat-Regular"
 }
 
 </style>

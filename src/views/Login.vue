@@ -2,8 +2,7 @@
   <Page actionBarHidden="true">
     <FlexboxLayout class="page">
       <StackLayout class="form">
-        <!-- <Image class="logo" src="~/images/logo.png"></Image> -->
-        <Label class="header" text="OneFocus"></Label>
+        <Label class="header fas" text.decode="OneFocus &#xf02d;"></Label>
 
         <GridLayout rows="auto, auto, auto">
           <StackLayout row="0" class="input-field">
@@ -32,8 +31,8 @@
           <ActivityIndicator rowSpan="3" :busy="processing"></ActivityIndicator>
         </GridLayout>
 
-        <Button :text="isLoggingIn ? 'Log In' : 'Sign Up'" :isEnabled="!processing"
-          @tap="submit" class="btn btn-primary m-t-20"></Button>
+        <Button :text="isLoggingIn ? 'LOGIN' : 'SIGN UP'" :isEnabled="!processing"
+          @tap="submit" class="btn btn-primary m-t-20 submit"></Button>
         <Label *v-show="isLoggingIn" text="Forgot your password?"
           class="login-label" @tap="forgotPassword()"></Label>
       </StackLayout>
@@ -57,8 +56,6 @@
 </template>
 
 <script>
-import Home from "./Home";
-import Task from "./Task";
 import App from "./App";
 import axios from 'axios'
 
@@ -254,11 +251,11 @@ export default {
 
 .header {
   horizontal-align: center;
-  font-size: 25;
-  font-weight: 600;
+  font-size: 30;
+  font-weight: 500;
   margin-bottom: 70;
   text-align: center;
-  color: #D51A1A;
+  color: black;
 }
 
 .header2 {
@@ -267,7 +264,7 @@ export default {
   font-weight: 600;
   text-align: center;
   margin-top: 15;
-  margin-bottom: 10;
+  margin-bottom: 15;
 }
 
 
@@ -287,6 +284,17 @@ export default {
 
 .btn-primary {
   margin: 30 5 15 5;
+}
+
+.submit {
+  width: 150;
+  height: 50;
+  color: white;
+  border-radius: 5; 
+  background-color: #A9988D;
+  font-size: 22;
+  font-weight: 400;
+  margin-bottom: 20;
 }
 
 .login-label {

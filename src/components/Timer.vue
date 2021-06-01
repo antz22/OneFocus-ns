@@ -1,5 +1,63 @@
 <template>
-  <Label class="header2" :text="formattedTimeLeft"/>
+  <!-- <Label class="header2" :text="formattedTimeLeft"/> -->
+
+    <GridLayout>
+      <RadRadialGauge class="gauge">
+        <RadialScale ref="myScale" v-tkRadialGaugeScales startAngle="0" sweepAngle="360" minimum="0" maximum="100" radius="0.9">
+          <ScaleStyle v-tkRadialScaleStyle ticksVisible="false" labelsVisible="false" lineThickness="0"></ScaleStyle>
+
+          <!-- <RadialBarIndicator v-tkRadialScaleIndicators minimum="0" maximum="100" location="0.5">
+            <BarIndicatorStyle v-tkRadialBarIndicatorStyle fillColor="rgba(224,151,36,0.5)" barWidth="0.2"></BarIndicatorStyle>
+          </RadialBarIndicator>
+
+          <RadialBarIndicator v-tkRadialScaleIndicators minimum="0" maximum="0" location="0.5" isAnimated="true">
+            <BarIndicatorStyle v-tkRadialBarIndicatorStyle cap="Round" fillColor="rgba(224,151,36,1)" barWidth="0.2"></BarIndicatorStyle>
+          </RadialBarIndicator> -->
+
+          <RadialBarIndicator v-tkRadialScaleIndicators minimum="0" maximum="100" location="0.75">
+            <BarIndicatorStyle v-tkRadialBarIndicatorStyle fillColor="rgba(196,241,57,0.5)" barWidth="0.2"></BarIndicatorStyle>
+          </RadialBarIndicator>
+
+          <RadialBarIndicator v-tkRadialScaleIndicators minimum="0" :maximum="test" location="0.75" isAnimated="true">
+            <BarIndicatorStyle v-tkRadialBarIndicatorStyle cap="Round" fillColor="rgba(196,241,57,1)" barWidth="0.2"></BarIndicatorStyle>
+          </RadialBarIndicator>
+
+          <!-- <RadialBarIndicator v-tkRadialScaleIndicators minimum="0" maximum="100" location="1">
+            <BarIndicatorStyle v-tkRadialBarIndicatorStyle fillColor="rgba(132,235,247,0.5)" barWidth="0.2"></BarIndicatorStyle>
+          </RadialBarIndicator>
+
+          <RadialBarIndicator v-tkRadialScaleIndicators minimum="0" maximum="0" location="1" isAnimated="true">
+            <BarIndicatorStyle v-tkRadialBarIndicatorStyle cap="Round" fillColor="rgba(132,235,247,1)" barWidth="0.2"></BarIndicatorStyle>
+          </RadialBarIndicator> -->
+        </RadialScale>
+      </RadRadialGauge>.
+      <Label :text="formattedTimeLeft" :color="textColor" :fontSize="textSize" class="m-x-auto m-y-auto" :marginTop="offset"></Label>
+    </GridLayout>
+
+
+	<!-- <GridLayout :height="height" :width="height">
+		<RadRadialGauge>
+			<RadialScale v-tkRadialGaugeScales startAngle="-90" sweepAngle="360">
+				<ScaleStyle v-tkRadialScaleStyle ticksVisible="false" labelsVisible="false" lineThickness="0">
+				</ScaleStyle>
+
+				<RadialBarIndicator v-tkRadialScaleIndicators minimum="0" :maximum="value">
+					<BarIndicatorStyle v-tkRadialBarIndicatorStyle :fillColor="fillColor" cap="Round" barWidth="0.1">
+					</BarIndicatorStyle>
+				</RadialBarIndicator>
+
+				<RadialBarIndicator v-tkRadialScaleIndicators minimum="0" maximum="100">
+					<BarIndicatorStyle v-tkRadialBarIndicatorStyle :fillColor="fillBackgroundColor" cap="Round" barWidth="0.1">
+					</BarIndicatorStyle>
+				</RadialBarIndicator>
+
+        <RadialNeedle v-tkRadialScaleIndicators isAnimated="true" animatedDuration="500">
+          <NeedleStyle v-tkRadialNeedleStyle length="0.8" />
+        </RadialNeedle>
+
+			</RadialScale>
+		</RadRadialGauge>
+	</GridLayout> -->
 </template>
 
 <script>
@@ -10,6 +68,11 @@ const ALERT_THRESHOLD = 5;
 
 export default {
   name: 'Timer',
+  data() {
+    return {
+      value: 0,
+    }
+  },
   props: {
     timeLeft: {
       type: Number,
@@ -31,6 +94,13 @@ export default {
       type: Number,
       default: 10
     },
+
+    size: { default: 100 },
+    progress: { default: 0 },
+    offset: { default: 0 },
+    textColor: { default: "#bfbfc4" },
+    fillColor: { default: "#FDA458" },
+    fillBackgroundColor: { default: "#efeff4" }
   },
   computed: {
     formattedTimeLeft() {
@@ -89,10 +159,30 @@ export default {
         return info.color
       }
     },
+
+
+    height() {
+      return Math.min(this.size, 250);
+    },
+    value() {
+      // console.log(this.timeLeft, this.timeLimit)
+      // console.log(Math.min(parseInt(this.timeLeft/this.timeLimit*100), 100))
+      return Math.min(parseInt(this.timeLeft/this.timeLimit*100), 100);
+    },
+    text() {
+      return `${this.value.toFixed()}%`;
+    },
+    textSize() {
+      return this.height / 3.5;
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 
+.gauge {
+  width: 400;
+  height: 400;
+}
 </style>

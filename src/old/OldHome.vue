@@ -1,11 +1,17 @@
 <template>
   <!-- <Page> -->
     <!-- <ActionBar title="OneFocus"/> -->
-    <ScrollView>
+    <ScrollView class="container">
       <StackLayout orientation="vertical">
 
         <GridLayout rows="auto,auto">
-          <Label :text="quote.content" class="q-content" textWrap="true" row="0"/>
+          <Label row="0" class="q-content" textWrap="true">
+            <FormattedString>
+              <Span text="&quot;"/>
+              <Span :text="quote.content"/>
+              <Span text="&quot;"/>
+            </FormattedString>
+          </Label>
           <Label :text="quote.author" class="q-author" row="1"/>
         </GridLayout>
 
@@ -29,18 +35,13 @@
           <GridLayout v-for="goal in goals" :key="goal.id" rows="auto,auto,auto,auto" cols="auto,auto" class="display-goal">
             <Label :text="goal.goal" class="item-goal" row="0" col="0" />
             <Label :text="findProgress(goal.progress, goal.progressLimit)" class="progress" row="1" col="0" />
-            <Button class="archive" text="Archive" @tap="deleteGoal(goal.id); getGoals()" row="2" col="0"/>
+            <Button class="archive archive-goal" text="Archive" @tap="deleteGoal(goal.id); getGoals()" row="2" col="0"/>
           </GridLayout>
         </StackLayout>
 
         <StackLayout>
           <Label v-for="error in errors" :text="error" :key="error"/>
         </StackLayout>
-
-        <!-- <Button text="Create a Task" @tap="goToTask"/>
-        <Button text="Create a Goal" @tap="goToGoal"/>
-        <Button text="Pomodoro Timer" @tap="goToPomo"/>
-        <Button text="About" @tap="goToAbout"/> -->
 
       </StackLayout>
     </ScrollView>
@@ -49,10 +50,6 @@
 
 <script >
 import axios from 'axios'
-import Task from './Task'
-import Goal from './Goal'
-import Pomodoro from './Pomodoro'
-import About from './About'
 
 export default {
   data() {
@@ -120,32 +117,32 @@ export default {
         })
     },
     deleteTask(task_id) {
-      // if (this.alert('Are you sure?')) {
-      const formData = {
-        id: task_id,
-      }
-      axios
-        .post('/api/v1/delete-task/', formData)
-        .then(response => {
-          this.alert('Task archived.')
-
-          // this.$router.push('/')
-        })
-      // }
+      confirm({
+        title: "Archive Task?",
+        okButtonText: "Archive",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result) {
+          const formData = {
+            id: task_id,
+          }
+          axios.post('/api/v1/delete-task/', formData)
+        }
+      })
     },
     deleteGoal(goal_id) {
-      // if (this.alert('Are you sure?')) {
-      const formData = {
-        id: goal_id,
-      }
-      axios
-        .post('/api/v1/delete-goal/', formData)
-        .then(response => {
-          this.alert('Goal archived.')
-
-          // this.$router.push('/')
-        })
-      // }
+      confirm({
+        title: "Archive Goal?",
+        okButtonText: "Archive",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result) {
+          const formData = {
+            id: goal_id,
+          }
+          axios.post('/api/v1/delete-goal/', formData)
+        }
+      })
     },
     findProgress(current, limit) {
       let calcProgress = parseInt(current/limit*100)
@@ -170,6 +167,11 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  background-color: #FF8B94;
+}
+
+
 .q-content {
   margin-top: 5;
   font-size: 15;
@@ -185,8 +187,18 @@ export default {
   margin-left: 15;
   margin-right: 15;
   margin-bottom: 20;
-  background-color: #53ba82;
+  /* background-color: #53ba82; */
+  background-color: #FFAAA5;
   border-radius: 20px;
+
+  -webkit-box-shadow: 3px 3px 5px 6px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    3px 3px 5px 6px #ccc;  /* Firefox 3.5 - 3.6 */
+  box-shadow:         3px 3px 5px 6px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+/* #A8E6CF
+#DCEDC1
+#FFD3B6
+#FFAAA5
+#FF8B94 */
 
 }
 
@@ -194,9 +206,13 @@ export default {
   margin-left: 15;
   margin-right: 15;
   margin-bottom: 20;
-  background-color: #53ba82;
+  /* background-color: #53ba82; */
+  background-color: #FFAAA5;
   border-radius: 20px;
 
+  -webkit-box-shadow: 3px 3px 5px 6px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    3px 3px 5px 6px #ccc;  /* Firefox 3.5 - 3.6 */
+  box-shadow:         3px 3px 5px 6px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }
 
 .item-content {
@@ -233,12 +249,12 @@ export default {
 .progress {
   text-align: center;
   margin-top: 10;
-  margin-bottom: 10;
 
 }
 
 .archive {
   width: 80;
+  margin-top: 10;
   height: 35;
 
 }
@@ -248,4 +264,7 @@ check-box {
   margin-top: 20;
 }
 
+.archive-goal {
+  margin-bottom: 16;
+}
 </style>

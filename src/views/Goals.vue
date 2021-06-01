@@ -1,33 +1,27 @@
 <template>
   <!-- <Page> -->
-    <!-- <ActionBar title="Create a Task"/> -->
+    <!-- <ActionBar title="Create a Goal"/> -->
 
     <FlexboxLayout class="page">
       <StackLayout class="form">
         <!-- <Image class="logo" src="~/images/logo.png"></Image> -->
-        <Label class="header" text="New Task"></Label>
+        <Label class="header" text="New Goal"></Label>
 
-        <GridLayout rows="auto, auto, auto, auto">
+        <GridLayout rows="auto, auto, auto">
           <StackLayout row="0" class="input-field">
-            <TextField class="input" hint="What's the task?" v-model="content"
+            <TextField class="input" hint="What is your goal?" v-model="goal"
               returnKeyType="next"/>
             <StackLayout class="hr-light"></StackLayout>
           </StackLayout>
 
           <StackLayout row="1" class="input-field">
-            <TextField class="input" hint="What's the motivation? (optional)" v-model="motivation"
+            <TextField class="input" hint="What's the limit of what you want to measure your progress by?" v-model="progressLimit"
               returnKeyType="next"/>
             <StackLayout class="hr-light"></StackLayout>
           </StackLayout>
 
           <StackLayout row="2" class="input-field">
-            <TextField class="input" hint="How long will it take? (hours)" v-model.number="hours"
-              returnKeyType="next"/>
-            <StackLayout class="hr-light"></StackLayout>
-          </StackLayout>
-
-          <StackLayout row="3" class="input-field">
-            <TextField class="input" hint="How long will it take? (mins)" v-model.number="mins"
+            <TextField class="input" hint="Have you made any progress on this goal yet?" v-model="progress"
               returnKeyType="next"/>
             <StackLayout class="hr-light"></StackLayout>
           </StackLayout>
@@ -35,7 +29,7 @@
           <ActivityIndicator rowSpan="3" :busy="processing"></ActivityIndicator>
         </GridLayout>
 
-        <Button text="Create Task" @tap="submitForm" class="btn btn-primary m-t-20"/>
+        <Button text="Create Goal" @tap="submitForm" class="btn btn-primary m-t-20"/>
       </StackLayout>
 
       <Label v-if="errors.length" >
@@ -45,61 +39,53 @@
       </Label>
 
     </FlexboxLayout>
+    <!-- <label>(ex. 90 days, 10 homework assignments, etc)</label>
+
+    <label>(ex. finished 5/10 assignments already)</label> -->
   <!-- </Page> -->
+
 </template>
+
 
 <script>
 import axios from 'axios'
-import Home from './Home'
 
 export default {
-  name: 'Task',
+  name: 'Goal',
   data() {
     return {
-      content: '',
-      motivation: '',
-      hours: 0,
-      mins: 0,
+      goal: '',
+      progress: 0,
+      progressLimit: 0,
       errors: [],
 
       processing: false,
     }
-  },
-  computed: {
-    time() {
-      return this.hours*60+this.mins
-    },
   },
   methods: {
     submitForm() {
       this.processing = true
       this.errors = []
 
-      if (this.content === '') {
-        this.errors.push('Enter a task')
+      if (this.goal === '') {
+        this.errors.push('Enter a goal')
       }
-
-      if (this.time === '') {
-        this.errors.push('Enter a time')
-      }
-      console.log(this.errors)
 
       if (!this.errors.length) {
         const formData = {
-          content: this.content,
-          motivation: this.motivation,
+          goal: this.goal,
           time: this.time,
-          completed: false
+          progress: this.progress,
+          progressLimit: this.progressLimit,
         }
 
         axios
-          .post("/api/v1/create-task/", formData)
+          .post("/api/v1/create-goal/", formData)
           .then(response => {
             this.processing = false
-            alert('Task created.')
+            alert('Goal created.')
 
             this.$navigateTo(Home, {clearHistory: true})
-
             // this.$router.push('/')
           })
           .catch(error => {
@@ -110,7 +96,7 @@ export default {
 
               console.log(JSON.stringify(error.response.data))
 
-            } else if (error) {
+            } else if (error.message) {
               this.errors.push('Something went wrong. Please try again')
 
               console.log(JSON.stringify(error))
