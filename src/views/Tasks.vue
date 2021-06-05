@@ -1,54 +1,41 @@
 <template>
-  <Page>
+  <!-- <Page> -->
     <StackLayout orientation="vertical">
 
       <!-- Title -->
       <GridLayout class="title-container" rows="auto,auto">
         <Label class="title" text="Tasks" horizontalAlignment="left"/>
-        <Label class="sort" horizontalAlignment="right">
-          <FormattedString>
-            <Span text="by "/>
-            <!-- <Span text="date" @tap="sortDate"/> -->
-            <!-- <Span text="priority," @tap="sortPriority"/> -->
-            <!-- <Span text="category," @tap="sortCategory"/> -->
-            <!-- <DropDown :items="items"/> -->
-            <!-- <ListPicker items="['category', 'priority', 'date']"/> -->
-          </FormattedString>
-        </Label>
+        <!-- <Label class="sort" horizontalAlignment="right">
+          <Button @tap="sortDate" text="date" />
+          <Button @tap="sortPriority" text="priority" />
+          <Button @tap="sortCategory" text="category" />
+        </Label> -->
         <Button row="1" text="date" @tap="sortDate" horizontalAlignment="left"/>
         <Button row="1" text="priority" @tap="sortPriority" horizontalAlignment="center"/>
         <Button row="1" text="category" @tap="sortCategory" horizontalAlignment="right"/>
       </GridLayout>
 
+      <!-- Create Task  -->
+      <!-- <CreateTask /> -->
+
+			<!-- <AbsoluteLayout ref="fabItemPosition" marginTop="87%" marginLeft="80%">
+				<AddButton @onButtonTap="createTaskForm" :isActive="isActive" />
+			</AbsoluteLayout> -->
+
 
       <!-- Sort by parameter -->
-      <TasksDate v-if="byDate" :taskArray="tasks"/>
-      <TasksCategory v-if="byCategory" :taskArray="tasks"/>
-      <TasksPriority v-if="byPriority" :taskArray="tasks"/>
-
-
-      <!-- Create Task  -->
-
-      <CreateTask v-if="displayTaskForm" />
-
-
-			<AbsoluteLayout ref="fabItemPosition" marginTop="87%" marginLeft="80%">
-				<!-- <GridLayout ref="fabItemContainer" left="8" top="8">
-					<FabItem row="1" :class="classItem1" color="#E94E77" title="E" />
-					<FabItem row="1" :class="classItem2" color="#3FB8AF" title="U" />
-					<FabItem row="1" :class="classItem3" color="#FCB653" title="V" />
-				</GridLayout> -->
-				<FabButton @onButtonTap="createTask" :isActive="isActive" />
-			</AbsoluteLayout>
+      <TasksDate v-if="byDate" @completeTask="completeTask"/>
+      <TasksCategory v-if="byCategory" @completeTask="completeTask"/>
+      <TasksPriority v-if="byPriority" @completeTask="completeTask"/>
 
 
       <!-- Display errors -->
-      <Label v-for="error in errors" :key="error" text="error"/>
+      <!-- <Label v-for="error in errors" :key="error"/> -->
 
 
     </StackLayout>
 
-  </Page>
+  <!-- </Page> -->
 </template>
 
 <script>
@@ -57,7 +44,7 @@ import CreateTask from '../components/CreateTask.vue'
 import TasksCategory from '../components/TasksCategory.vue'
 import TasksDate from '../components/TasksDate.vue'
 import TasksPriority from '../components/TasksPriority.vue'
-import Button from '../components/Button.vue'
+import AddButton from '../components/AddButton.vue'
 
 export default {
   name: 'Tasks',
@@ -66,14 +53,9 @@ export default {
       byDate: true,
       byCategory: false,
       byPriority: false,
-
-      displayTaskForm: false,
-
-      tasks: [],
-      
-      errors: [],
-
+      errors: ['bah'],
       processing: false,
+      isActive: false,
     }
   },
   components: {
@@ -81,10 +63,7 @@ export default {
     TasksCategory,
     TasksPriority,
     TasksDate,
-    Button,
-  },
-  mounted() {
-    this.getTasks()
+    AddButton,
   },
   methods: {
     sortDate() {
@@ -102,19 +81,28 @@ export default {
       this.byCategory = false
       this.byPriority = true
     },
-    getTasks() {
+    createTaskForm(args) {
+      this.isActive == !this.isActive
+      this.displayTaskForm == !this.displayTaskForm
+    },
+    completeTask(task_id, completed) {
+      const formData = {
+        id: task_id,
+        completed: completed,
+      }
       axios
-        .get('/api/v1/tasks/')
+        .post('/api/v1/create-task/', formData)
         .then(response => {
-          this.tasks = response.data
-        })
-        .catch(error => {
-          this.errors.push(error)
+          toast({
+            message: 'Task updated.',
+            type: 'is-success',
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: 'bottom-right',
+          })
         })
     },
-    createTask(args) {
-
-    }
   }
 }
 </script>
@@ -150,122 +138,5 @@ Page {
   margin-left: 32;
   margin-right: 32;
 }
-
-/* FabButton - from nativescript market */
-
-/* ListView Label {
-  height: 48;
-  min-height: 48;
-}
-
-.backdrop {
-  background-color: rgba(29, 30, 35, .90);
-  opacity: 0;
-}
-
-.backdrop-visible {
-  animation-name: activateBackdrop;
-  animation-duration: .25;
-  animation-fill-mode: forwards;
-}
-
-.backdrop-invisible {
-  animation-name: activateBackdrop;
-  animation-duration: .25;
-  animation-fill-mode: forwards;
-  animation-direction: reverse;
-} 
-
-.raiseItem1 {
-  opacity: 1;
-  animation-name: raiseItem1;
-  animation-duration: .25;
-  animation-timing-function: cubic-bezier(0.165, 0.840, 0.440, 1.000);
-  animation-fill-mode: forwards;
-}
-
-.raiseItem2 {
-  opacity: 1;
-  animation-name: raiseItem2;
-  animation-duration: .25;
-  animation-timing-function: cubic-bezier(0.165, 0.840, 0.440, 1.000);
-  animation-fill-mode: forwards;
-}
-
-.raiseItem3 {
-  opacity: 1;
-  animation-name: raiseItem3;
-  animation-duration: .25;
-  animation-timing-function: cubic-bezier(0.165, 0.840, 0.440, 1.000);
-  animation-fill-mode: forwards;
-}
-
-.downItem1 {
-  animation-name: raiseItem1;
-  animation-duration: .20;
-  animation-timing-function: cubic-bezier(0.895, 0.030, 0.685, 0.220);
-  animation-fill-mode: forwards;
-  animation-direction: reverse;
-}
-
-.downItem2 {
-  animation-name: raiseItem2;
-  animation-duration: .20;
-  animation-timing-function: cubic-bezier(0.895, 0.030, 0.685, 0.220);
-  animation-fill-mode: forwards;
-  animation-direction: reverse;
-}
-
-.downItem3 {
-  animation-name: raiseItem3;
-  animation-duration: .20;
-  animation-timing-function: cubic-bezier(0.895, 0.030, 0.685, 0.220);
-  animation-fill-mode: forwards;
-  animation-direction: reverse;
-}
-
-@keyframes activateBackdrop {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes raiseItem1 {
-  from {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, -64);
-  }
-}
-
-@keyframes raiseItem2 {
-  from {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, -128);
-  }
-}
-
-@keyframes raiseItem3 {
-  from {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, -192);
-  }
-}
-*/
-
 
 </style>

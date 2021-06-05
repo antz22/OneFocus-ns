@@ -1,10 +1,10 @@
 <template>
   <!-- <Page> -->
-    <AbsoluteLayout class="page">
+    <FlexboxLayout class="page">
       <StackLayout class="form">
         <Label class="header" text="New Task"></Label>
 
-        <!-- <DropDown :items="PRIORITIES" selectedIndex="0"/> -->
+        <DropDown :items="PRIORITIES" selectedIndex="0"/>
 
         <GridLayout rows="auto, auto, auto, auto">
           <StackLayout row="0" class="input-field">
@@ -43,7 +43,7 @@
         </FormattedString>
       </Label>
 
-    </AbsoluteLayout>
+    </FlexboxLayout>
 
   <!-- </Page> -->
 
@@ -128,11 +128,24 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
-FlexboxLayout {
-  position: absolute;
+</style>
+
+
+
+<template>
+
+
+  
+</template>
+
+<script>
+export default {
 
 }
+</script>
+
+<style>
 
 </style>

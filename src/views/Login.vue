@@ -70,7 +70,15 @@ export default {
         confirmPassword: "",
       },
       errors: [],
+
+      devUser: {
+        username: "android",
+        password: "testing123123",
+      }
     };
+  },
+  mounted() {
+    this.login()
   },
   methods: {
     toggleForm() {
@@ -101,8 +109,13 @@ export default {
       // localStorage.removeItem("token")
 
       const formData = {
-        username: this.user.username,
-        password: this.user.password
+        // username: this.user.username,
+        // password: this.user.password
+
+        // DELETE LATER
+
+        username: this.devUser.username,
+        password: this.devUser.password
       }
 
       const headers = {
@@ -120,8 +133,6 @@ export default {
           this.$store.commit('setToken', token)
           axios.defaults.headers.common["Authorization"] = "Token " + token
           // localStorage.setItem("token", token)
-
-          // const toPath = this.$route.query.to || '/'
 
           this.$navigateTo(App, {clearHistory: true})
         })

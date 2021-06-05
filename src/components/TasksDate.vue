@@ -5,16 +5,17 @@
   <!-- Tasks  -->
   <GridLayout class="tasks" :rows="rows">
 
-    <Label class="list-title" text="Most Reccent" row="0"/>
+    <Label class="list-title" text="Most Recent" row="0"/>
 
     <!-- Task -->
-    <GridLayout v-for="task in tasks" :key="task.id" 
-      class="task" :class="getPriority(task.priority)" rows="auto,auto" cols="auto,auto" row="1">
+    <GridLayout v-for="(task, index) in tasks" :key="task.id" 
+      class="task" :class="getPriority(task.priority)" rows="auto,auto" cols="auto,auto" :row="index+1">
 
       <Label class="content" :text="task.content" horizontalAlignment="left" row="0"/>
       <Label v-if="task.time > 0" class="time" :text="showTime(task.time)" horizontalAlignment="right" row="0"/>
-      <Label class="category" :text="task.category"  horizontalAlignment="left" row="1"/>
-      <Label class="check" text="check?" horizontalAlignment="right" row="1"/>
+      <Label class="category" :text="task.category_name"  horizontalAlignment="left" row="1"/>
+      <Label v-if="!task.completed" class="check far" text.decode="&#xf111;" @tap="updateTask(task.id, !task.completed)" horizontalAlignment="right" row="1"/>
+      <Label v-else class="check fas" text.decode="&#xf00c;" @tap="updateTask(task.id, !task.completed)" horizontalAlignment="right" row="1"/>
 
     </GridLayout>
 
@@ -45,18 +46,31 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   name: 'TasksDate',
-  props: {
-    taskArray: Array
-  },
   data() {
     return {
-      tasks: this.tasksArray
+      tasks: [],
+      errors: [],
+      rowIndex: 0
     }
   },
+  mounted() {
+    this.getTasks()
+  },
   methods: {
+    getTasks() {
+      axios
+        .get('/api/v1/tasks/')
+        .then(response => {
+          this.tasks = response.data
+        })
+        .catch(error => {
+          this.errors.push(error)
+        })
+    },
     showTime(mins) {
       if (mins < 60) {
         return `${mins} mins`
@@ -69,22 +83,36 @@ export default {
       }
     },
     getPriority(priority) {
-      if (priority === "High") {
+      if (priority === "3") {
         return 'b-high'
-      } else if (priority === "Medium") {
+      } else if (priority === "2") {
         return 'b-medium'
-      } else if (priority === "Low") {
+      } else if (priority === "1") {
         return 'b-low'
       }
+    },
+    updateTask(task_id, completed) {
+      this.$emit('completeTask', task_id, completed)
+      this.getTasks()
+    },
+    archiveTask(task_id) {
+      this.$emit('archiveTask', task_id)
+      this.getTasks()
     }
   },
   computed: {
     rows() {
       const rows = [];
-      for (let i = 0; i < this.tasks.length; i++) {
+      // additional one for label
+      for (let i = 0; i <= this.tasks.length; i++) {
         rows.push("auto")
       }
       return rows.join(",")
+    },
+    row() {
+      this.rowIndex += 1
+      return this.rowIndex
+
     }
   },
 }

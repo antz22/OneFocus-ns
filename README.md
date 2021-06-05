@@ -1,6 +1,15 @@
-# NativeScript-Vue Application
+# OneFocus Nativescript-Vue
 
-> A native application built with NativeScript-Vue
+A native application built with NativeScript-Vue. This is the mobile application for the [OneFocus](https://github.com/antz22/OneFocus) web application, designed to let students organize their goals, tasks and focus into a single place.
+
+## Screenshots
+
+![Landing](https://github.com/antz22/OneFocus-ns/blob/master/images/landing.png)
+
+![Home](https://github.com/antz22/OneFocus-ns/blob/master/images/home.png)
+
+![Tasks](https://github.com/antz22/OneFocus-ns/blob/master/images/tasks.png)
+
 
 ## Usage
 

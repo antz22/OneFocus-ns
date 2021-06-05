@@ -1,5 +1,5 @@
 <template>
-  <Page>
+  <!-- <Page> -->
     <ScrollView class="container">
       <StackLayout orientation="vertical">
 
@@ -52,34 +52,45 @@
           </Label>
         </StackLayout>
 
+        <!-- <Button text="Create Task" @tap="goToCreateTask"/> -->
+
+
         <StackLayout>
           <Label v-for="error in errors" :text="error" :key="error"/>
         </StackLayout>
 
       </StackLayout>
     </ScrollView>
-  </Page>
+  <!-- </Page> -->
 </template>
 
 <script >
-// import axios from 'axios'
+import axios from 'axios'
+import CreateTask from '../components/CreateTask.vue'
 
 export default {
-//   data() {
-//     return {
+  name: 'Home',
+  components: {
+    CreateTask,
+  },
+  data() {
+    return {
 //       tasks: [],
 //       goals: [],
 //       quote: '',
       
-//       errors: [],
-//     }
-//   },
-//   mounted() {
+      errors: [],
+    }
+  },
+  mounted() {
 //     this.getTasks(),
 //     this.getGoals(),
 //     this.getQuote()
-//   },
-//   methods: {
+  },
+  methods: {
+    goToCreateTask() {
+      this.$navigateTo(CreateTask)
+    }
 //     getQuote() {
 //       axios
 //         .get('/api/v1/quotes/')
@@ -175,7 +186,7 @@ export default {
 //       }
 //     },
 
-//   },
+  },
 }
 </script>
 
